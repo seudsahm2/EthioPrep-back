@@ -1,0 +1,527 @@
+
+
+# Professional Backend Generation Prompt (For Copilot)
+
+## Context
+
+You are an expert backend architect.
+
+You must analyze the **entire frontend codebase** in the folder EthioPrep-front and build a **complete backend system** that perfectly matches the frontend API requirements.
+
+The backend must power an Ethiopian exam preparation platform for:
+
+1. Ethiopian Grade 12 Entrance Exam students
+2. University Exit Exam students
+
+The frontend already contains:
+
+* UI pages
+* routes
+* components
+* state management
+* expected API calls
+
+Your job is to **scan the frontend completely**, identify all API needs, and implement a **production-ready backend**.
+
+---
+
+# Backend Technology Stack
+
+Use the following technologies:
+
+Backend framework:
+
+* Django
+* Django REST Framework
+
+Database:
+
+* PostgreSQL
+
+Caching and background tasks:
+
+* Redis
+* Celery
+
+Authentication:
+
+* JWT authentication
+
+AI integration:
+
+* AI question generation service
+
+Production database:
+
+* Supabase PostgreSQL
+
+Containerization:
+
+* Docker
+
+---
+
+# Core System Architecture
+
+Design a **scalable modular Django project**.
+
+Example structure:
+
+```
+backend/
+    config/
+        settings/
+            base.py
+            local.py
+            production.py
+
+        urls.py
+        celery.py
+
+    apps/
+        users/
+        exams/
+        questions/
+        payments/
+        analytics/
+        ai_generation/
+        telegram_bot/
+
+    services/
+        ai_service.py
+        payment_service.py
+
+    utils/
+        permissions.py
+        pagination.py
+```
+
+Each app must be independent and follow **clean architecture principles**.
+
+---
+
+# User System
+
+Users must register and log in.
+
+User roles:
+
+Student
+Admin
+
+User fields:
+
+* id
+* email
+* username
+* password
+* exam_type
+* department (for university users)
+* created_at
+
+Authentication must use **JWT tokens**.
+
+Features:
+
+User registration
+Login
+Logout
+Profile update
+
+---
+
+# Exam System
+
+Two main exam types:
+
+Grade 12 Entrance Exam
+
+Subjects:
+
+English
+Math
+Physics
+Chemistry
+Biology
+Civics
+SAT
+
+University Exit Exam
+
+Organized by:
+
+Department
+Course
+
+Example:
+
+Computer Science
+Operating Systems
+Algorithms
+Databases
+
+---
+
+# Question System
+
+Question types:
+
+Exam Questions
+Practice Questions
+
+Sources:
+
+Past exams
+Model exams
+Class exams
+AI generated questions
+
+Question model must include:
+
+```
+Question
+- id
+- subject
+- topic
+- question_type
+- question_text
+- option_a
+- option_b
+- option_c
+- option_d
+- correct_answer
+```
+but as all questions are multiple choice, question type can be omitted and all questions can be treated as multiple choice. or you can keep the question type field for future flexibility if you plan to add other types of questions later on. or if you have anothrer way to differentiate questions, you can use that instead of the question type field.
+Explanation fields:
+
+```
+simple_explanation
+detailed_explanation
+deep_explanation
+```
+
+Additional metadata:
+
+difficulty
+year
+source
+
+---
+
+# Question Access Control
+
+Free users have limited access.
+
+Limits:
+
+Simple explanation → 20 questions
+Detailed explanation → 10 questions
+Deep explanation → 5 questions
+
+After reaching the limit, users must upgrade.
+
+Backend must enforce these limits.
+
+---
+
+# Subscription / Payment System
+
+Users can purchase access.
+
+Packages:
+
+Simple package → 50 birr
+Detailed package → 100 birr
+Deep package → 200 birr
+
+Payment flow:
+
+User clicks upgrade.
+
+Backend generates payment request.
+
+User uploads payment screenshot.
+
+Admin verifies payment.
+
+User account is upgraded.
+
+Payment model fields:
+
+```
+user
+package_type
+amount
+payment_screenshot
+status
+created_at
+verified_at
+```
+
+Future integration support:
+
+Payment gateway integration for **Chapa.
+
+Design code so it is easy to add automated payments later.
+
+---
+
+# Practice System
+
+Users must be able to:
+
+Practice by subject
+Practice by topic
+Practice random questions
+
+Practice session model:
+
+```
+PracticeSession
+- user
+- subject
+- started_at
+- completed_at
+- score
+```
+
+User answers model:
+
+```
+UserAnswer
+- user
+- question
+- selected_option
+- is_correct
+```
+
+---
+
+# Exam Simulation System
+
+Allow students to simulate real exams.
+
+Features:
+
+Timed exams
+
+Example:
+
+50 questions
+1 hour
+
+Exam result model:
+
+```
+ExamResult
+- user
+- score
+- correct_answers
+- wrong_answers
+- duration
+```
+
+---
+
+# Analytics System
+
+Backend must track:
+
+Accuracy by subject
+Accuracy by topic
+Weak areas
+Study history
+
+Analytics endpoints:
+
+User performance summary
+
+Subject accuracy
+
+Topic weakness detection.
+
+---
+
+# AI Question Generation
+
+Create a service that automatically generates new practice questions using AI.
+
+AI must generate:
+
+Question
+Options
+Correct answer
+All three explanation levels
+
+Use a service layer:
+
+```
+ai_generation/services/question_generator.py
+```
+
+Generated questions should be stored in the database.
+
+Use Redis queue + Celery for generation tasks.
+
+---
+
+# Caching Strategy
+
+Use **Redis caching** for:
+
+Question lists
+Popular subjects
+Leaderboards
+
+Goal:
+
+Fast responses for high traffic.
+
+---
+
+# Telegram Bot Integration
+
+Create backend support for a **Telegram bot**.
+
+Bot features:
+
+Start practice
+
+Choose subject
+
+Receive questions
+
+Submit answer
+
+Receive explanation
+
+Bot should call the same backend APIs.
+
+Bot logic should be implemented in:
+
+```
+apps/telegram_bot/
+```
+
+---
+
+# Admin Dashboard
+
+Use Django Admin but enhance it.
+
+Admins must be able to:
+
+Add questions
+
+Edit questions
+
+Bulk upload questions
+
+Verify payments
+
+Approve subscriptions
+
+Generate AI questions.
+
+---
+
+# API Design
+
+Build REST APIs for frontend.
+
+Examples:
+
+```
+POST /api/auth/register
+POST /api/auth/login
+
+GET /api/subjects
+GET /api/questions
+
+POST /api/practice/start
+POST /api/practice/answer
+
+GET /api/analytics
+
+POST /api/payments/upload
+```
+
+Use pagination for question endpoints.
+
+---
+
+# Security
+
+Implement:
+
+Rate limiting
+
+JWT authentication
+
+Permission system
+
+Input validation
+
+Prevent cheating in exam simulation.
+
+---
+
+# Performance Optimization
+
+Implement:
+
+Query optimization
+
+Database indexing
+
+Redis caching
+
+Background task processing.
+
+---
+
+# Deployment Architecture
+
+Production environment:
+
+Database → Supabase PostgreSQL
+Cache → Redis
+Backend → Django
+
+Environment variables must be used for all secrets.
+
+Use Docker containers.
+
+---
+
+# Code Quality Requirements
+
+Code must follow:
+
+Clean architecture
+Service layer pattern
+Repository pattern
+
+Include:
+
+Docstrings
+
+Type hints
+
+Unit tests.
+
+---
+
+# Final Objective
+
+The backend must fully support the frontend application and provide:
+
+Scalable APIs
+AI-powered question generation
+Payment management
+Analytics
+Telegram bot support.
+
+The system must be able to support **thousands of Ethiopian students preparing for exams simultaneously**.
+
+---

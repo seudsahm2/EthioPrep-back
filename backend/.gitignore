@@ -1,0 +1,54 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# Seed/generated local data
+apps/users/management/commands/seed_demo_data.py
+media/payments/seed_payment_*.png
+seed_data/
+*.seed.json
+*.seed.csv
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Packaging / build
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Test / tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Node artifacts (if any)
+node_modules/
+
