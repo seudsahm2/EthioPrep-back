@@ -1,0 +1,3 @@
+001541c85af58d5cf25d909b798750c8b7b5d9cd b148482ad18ff3e74ee28b7eeaeaa48355734b99 seud <seudsahm1@gmail.com> 1772725041 +0300	commit: feat: Enhance user management and authentication with Google and Telegram OAuth
+b148482ad18ff3e74ee28b7eeaeaa48355734b99 bde1d8e373e4cf23a22c8d9e5e8f5a2ddd805a3f seud <seudsahm1@gmail.com> 1772884714 +0300	commit: feat: Enhance user and payment models with email verification and rejection reason fields; improve OAuth linking and permissions
+bde1d8e373e4cf23a22c8d9e5e8f5a2ddd805a3f 833c0d1442d8710b942194675359cced2d764cc3 seud <seudsahm1@gmail.com> 1772948068 +0300	commit: feat: Add rich explanation fields to questions and users; implement JSON validation for rich content
